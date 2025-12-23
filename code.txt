@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <string.h>
+
+// 1. Structure for Date (Used for DOB and Admission Date)
+struct Date {
+    int day;
+    int month;
+    int year;
+};
+
+// 2. Structure for Address (Separates contact details from medical data)
+struct Address {
+    char street[50];
+    char city[50];
+    char state[50];
+    char zipCode[10];
+};
+
+// 3. Structure for Vitals (Clinical data)
+struct Vitals {
+    float bodyTemp;      // in Fahrenheit or Celsius
+    int heartRate;       // bpm
+    int bloodPressureSys; // Systolic (upper number)
+    int bloodPressureDia; // Diastolic (lower number)
+};
+
+// 4. MAIN STRUCTURE: Patient Record
+struct Patient {
+    // Demographics
+    int id;
+    char name[100];
+    char gender;        // 'M', 'F', 'O'
+    struct Date dob;    // Nested Date structure
+    struct Address addr; // Nested Address structure
+
+    // Clinical Info
+    char bloodGroup[5];
+    char diagnosis[100];
+    struct Vitals vitals; // Nested Vitals structure
+   
+    // Admin Info
+    int isDischarged;   // 0 for No, 1 for Yes
+};
+
+// Function to print patient details
+void displayPatient(struct Patient p) {
+    printf("========================================\n");
+    printf("       HOSPITAL PATIENT RECORD          \n");
+    printf("========================================\n");
+    printf("ID: %d\n", p.id);
+    printf("Name: %s\n", p.name);
+    printf("Gender: %c\n", p.gender);
+    printf("Date of Birth: %02d-%02d-%d\n", p.dob.day, p.dob.month, p.dob.year);
+    printf("Address: %s, %s\n", p.addr.city, p.addr.state);
+   
+    printf("\n--- CLINICAL DATA ---\n");
+    printf("Blood Group: %s\n", p.bloodGroup);
+    printf("Diagnosis: %s\n", p.diagnosis);
+    printf("Vitals: BP %d/%d | Heart Rate: %d bpm | Temp: %.1f F\n",
+           p.vitals.bloodPressureSys, p.vitals.bloodPressureDia,
+           p.vitals.heartRate, p.vitals.bodyTemp);
+   
+    printf("========================================\n");
+}
+
+int main() {
+    // Initialize a Patient variable
+    struct Patient p1;
+
+    // Assigning Demographics
+    p1.id = 101;
+    strcpy(p1.name, "Alice Smith");
+    p1.gender = 'F';
+   
+    // Assigning Nested Date (DOB)
+    p1.dob.day = 15;
+    p1.dob.month = 8;
+    p1.dob.year = 1990;
+
+    // Assigning Nested Address
+    strcpy(p1.addr.city, "New York");
+    strcpy(p1.addr.state, "NY");
+
+    // Assigning Clinical Data
+    strcpy(p1.bloodGroup, "O+");
+    strcpy(p1.diagnosis, "Acute Migraine");
+   
+    // Assigning Nested Vitals
+    p1.vitals.heartRate = 72;
+    p1.vitals.bodyTemp = 98.6;
+    p1.vitals.bloodPressureSys = 120;
+    p1.vitals.bloodPressureDia = 80;
+
+    // Display the record
+    displayPatient(p1);
+
+    return 0;
+}
